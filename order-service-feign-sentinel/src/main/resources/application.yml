@@ -1,0 +1,37 @@
+# 端口
+server:
+  port: 9006
+
+# 应用名
+spring:
+  application:
+    name: order-service
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8080 # Sentinel服务地址
+      eager: true # 立即加载
+
+# Eureka 配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/ # Eureka server url
+  instance:
+    prefer-ip-address: true # 使用ip注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port} # 实例id
+
+# Feign配置
+# 日志级别：NONE:不记录日志(默认) BASIC: 用于生产追踪记录 HEADERS: 在BASIC基础上加上请求头和响应头信息
+# FULL：记录所有
+feign:
+  client:
+    config:
+      product-service: # 需要配置的服务名称
+        loggerLevel: FULL # Feign日志类型
+  sentinel:
+    enabled: true # 开启基于Feign的sentinel服务熔断
+
+logging:
+  level:
+    com.wb.feign.ProductFeignClient: debug

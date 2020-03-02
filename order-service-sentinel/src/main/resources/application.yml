@@ -1,0 +1,28 @@
+# 端口
+server:
+  port: 9005
+
+# 应用名
+spring:
+  application:
+    name: order-service-sentinel
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8080 # 连接到sentinel服务地址
+      eager: true # 立即加载信息
+      datasource: # 本地文件加载限流配置
+        ds1:
+          file:
+            file: classpath:flowrule.json
+            data-type: json
+            rule-type: flow
+
+# Eureka 配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/ # Eureka server url
+  instance:
+    prefer-ip-address: true # 使用ip注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port} # 实例id

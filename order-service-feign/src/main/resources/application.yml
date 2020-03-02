@@ -1,0 +1,53 @@
+# 端口
+server:
+  port: 9003
+
+# 应用名
+spring:
+  application:
+    name: order-service
+
+# Eureka 配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/ # Eureka server url
+  instance:
+    prefer-ip-address: true # 使用ip注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port} # 实例id
+
+# Feign配置
+# 日志级别：NONE:不记录日志(默认) BASIC: 用于生产追踪记录 HEADERS: 在BASIC基础上加上请求头和响应头信息
+# FULL：记录所有
+feign:
+  client:
+    config:
+      product-service: # 需要配置的服务名称
+        loggerLevel: FULL # Feign日志类型
+  hystrix:
+    enabled: true # 开启基于Feign的服务熔断
+
+logging:
+  level:
+    com.wb.feign.ProductFeignClient: debug
+
+# 开启hystrix监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+# Hystrix配置
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 # 服务熔断超时时间
+      circuitBreaker:
+        requestVolumeThreshold: 5 #触发熔断的最小请求次数，默认20 /10秒
+        sleepWindowInMilliseconds: 10000 #熔断多少秒后去尝试请求 默认 5   打开状态的时间
+        errorThresholdPercentage: 50 #触发熔断的失败请求最小占比，默认50%
+

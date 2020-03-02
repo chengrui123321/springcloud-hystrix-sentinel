@@ -1,0 +1,21 @@
+# 端口
+server:
+  port: 8031
+
+# 应用名称
+spring:
+  application:
+    name: turbine-server
+
+#Eureka 配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+  instance:
+    prefer-ip-address: true
+
+# Turbine配置
+turbine:
+  app-config: ORDER-SERVICE # 监控服务名称,多个使用,分割
+  cluster-name-expression: "'default'"

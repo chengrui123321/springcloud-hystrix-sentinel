@@ -1,0 +1,19 @@
+# 端口
+server:
+  port: 9000
+# 应用名
+spring:
+  application:
+    name: eureka-server
+
+# Eureka Server配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/ # Eureka 服务端地址
+    fetch-registry: false # 不拉取注册信息
+    register-with-eureka: false # 不注册自己
+  server:
+    enable-self-preservation: false # 关闭自我保护机制
+    eviction-interval-timer-in-ms: 3000 # 剔除不需要的服务
+
